@@ -19,21 +19,19 @@ module CalendarsHelper
       :month => this_month.month,
       :previous_month_text => %Q{
 <div class="prevMonthName">
-  <a onclick="new Ajax.Request('#{calendar_path(:year => last_month.year, :month => last_month.month)}', { method: 'get' }); return false;"
-     href="#{calendar_path(:year => last_month.year, :month => last_month.month)}">
+  <a href="#{calendar_path(:year => last_month.year, :month => last_month.month)}">
     &lt;&nbsp;#{Date::ABBR_MONTHNAMES[last_month.month]}
   </a>
 </div>
       }.squish,
       :next_month_text => %Q{
 <div class="nextMonthName">
-  <a onclick="new Ajax.Request('#{calendar_path(:year => next_month.year, :month => next_month.month)}', { method: 'get' }); return false;"
-     href="#{calendar_path(:year => next_month.year, :month => next_month.month)}">
+  <a href="#{calendar_path(:year => next_month.year, :month => next_month.month)}">
     #{Date::ABBR_MONTHNAMES[next_month.month]}&nbsp;&gt;
   </a>
 </div>
       }.squish,
-      :abbrev => (0..1)
+      :abbrev => (0..0)
     }
 
     days_with_events = Event.for_month(this_month.month, this_month.year).group_by(&:date)
