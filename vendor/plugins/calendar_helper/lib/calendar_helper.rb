@@ -97,17 +97,28 @@ module CalendarHelper
     end
 
     # TODO Use some kind of builder instead of straight HTML
-    cal = %(<table class="#{options[:table_class]}" border="0" cellspacing="0" cellpadding="0">)
-    cal << %(<thead><tr>)
+    cal = %(<div class="calendar-header wrapper">)
+    cal << %(<div class="left-controls"> </div>)
+    cal << %(<div class="#{options[:month_name_class]}">#{Date::MONTHNAMES[options[:month]]}</div>)
+    cal << %(<div class="right-controls">)
     if options[:previous_month_text] or options[:next_month_text]
-      cal << %(<th colspan="2">#{options[:previous_month_text]}</th>)
-      colspan=3
-    else
-      colspan=7
+      cal << options[:previous_month_text] if options[:previous_month_text]
+      cal << options[:next_month_text] if options[:previous_month_text]
     end
-    cal << %(<th colspan="#{colspan}" class="#{options[:month_name_class]}">#{Date::MONTHNAMES[options[:month]]}</th>)
-    cal << %(<th colspan="2">#{options[:next_month_text]}</th>) if options[:next_month_text]
-    cal << %(</tr><tr class="#{options[:day_name_class]}">)
+    cal << %(</div><!--right-controls-->)
+    cal << %(</div><!-- calendar-header -->)
+    cal << %(<table class="#{options[:table_class]}" border="0" cellspacing="0" cellpadding="0">)
+    # cal << %(<thead><tr>)
+    # if options[:previous_month_text] or options[:next_month_text]
+    #   cal << %(<th colspan="2">#{options[:previous_month_text]}</th>)
+    #   colspan=3
+    # else
+    #   colspan=7
+    # end
+    # cal << %(<th colspan="#{colspan}" class="#{options[:month_name_class]}">#{Date::MONTHNAMES[options[:month]]}</th>)
+    # cal << %(<th colspan="2">#{options[:next_month_text]}</th>) if options[:next_month_text]
+    # cal << %(</tr>)
+    cal << %(<tr class="#{options[:day_name_class]}"><thead>)
     day_names.each do |d|
       unless d[options[:abbrev]].eql? d
         cal << "<th scope='col'><abbr title='#{d}'>#{d[options[:abbrev]]}</abbr></th>"
@@ -116,6 +127,7 @@ module CalendarHelper
       end
     end
     cal << "</tr></thead><tbody><tr>"
+    
     beginning_of_week(first, first_weekday).upto(first - 1) do |d|
       cal << %(<td class="#{options[:other_month_class]})
       cal << " weekendDay" if weekend?(d)
@@ -125,6 +137,7 @@ module CalendarHelper
         cal << %(">#{d.day}</td>)
       end
     end unless first.wday == first_weekday
+    
     first.upto(last) do |cur|
       cell_text, cell_attrs = block.call(cur)
       cell_text  ||= cur.mday
@@ -136,6 +149,7 @@ module CalendarHelper
       cal << "<td #{cell_attrs}>#{cell_text}</td>"
       cal << "</tr><tr>" if cur.wday == last_weekday
     end
+    
     (last + 1).upto(beginning_of_week(last + 7, first_weekday) - 1)  do |d|
       cal << %(<td class="#{options[:other_month_class]})
       cal << " weekendDay" if weekend?(d)
