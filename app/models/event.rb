@@ -54,6 +54,14 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def short_time
+    time = self.start_time
+    hour = time.strftime('%l').to_i
+    minute = (time.strftime('%M') == '00')? "" : ":#{time.strftime('%M')}"
+    meridian = time.strftime('%p').downcase[0,1]
+    "#{hour}#{minute}#{meridian}"
+  end
+
   protected
 
     def ensure_start_time_and_end_time_are_sane

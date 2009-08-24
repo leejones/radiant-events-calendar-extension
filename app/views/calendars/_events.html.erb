@@ -2,7 +2,7 @@
   <table border="0" cellspacing="0" cellpadding="0">
 	<% events.sort_by {|e| [e.start_time || end_of_day, e.name]}.each do |event| %>
     <tr>
-      <td class="time"><%= h event.time(:format => '%l:%M %p') if event.time %></td>
+      <td class="time"><%= h event.short_time if event.short_time %></td>
       <td>
 				<span class="artist"><%= h event.name %><br/>
 				<span class="title">

@@ -18,6 +18,8 @@ module CalendarsHelper
       :year => this_month.year,
       :month => this_month.month,
       :month_name_class => 'title',
+      :first_day_of_week => 1,
+      :show_today => true,
       :previous_month_text => %Q{
 <a class="calendar-control" href="#{calendar_path(:year => last_month.year, :month => last_month.month)}">
   <span class="previous-month">
