@@ -55,11 +55,12 @@ class Event < ActiveRecord::Base
   end
 
   def short_time
-    time = self.start_time
-    hour = time.strftime('%l').to_i
-    minute = (time.strftime('%M') == '00')? "" : ":#{time.strftime('%M')}"
-    meridian = time.strftime('%p').downcase[0,1]
-    "#{hour}#{minute}#{meridian}"
+    if time = self.start_time
+      hour = time.strftime('%l').to_i
+      minute = (time.strftime('%M') == '00')? "" : ":#{time.strftime('%M')}"
+      meridian = time.strftime('%p').downcase[0,1]
+      "#{hour}#{minute}#{meridian}"
+    end
   end
 
   protected
