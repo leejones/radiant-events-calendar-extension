@@ -8,7 +8,7 @@
     - if event.location
       %dd.location= h event.location
     - unless event.time.blank?
-      %dd.time= h event.time
+      %dd.time= h event.time(:format => '%l:%M%P').downcase
     %dd.description= sanitize(event.description_html) || '&nbsp;'
 
 -#
