@@ -11,6 +11,7 @@ class Event < ActiveRecord::Base
 
   named_scope :for_date, lambda {|date| { :conditions => [ 'date = ?', date ], :order => 'start_time, name' } }
   named_scope :for_month, lambda {|month, year| { :conditions => [ 'date BETWEEN ? AND ?', Date.civil(year,month,1), Date.civil(year,month,-1) ] } }
+  named_scope :this_week, :conditions => ['date BETWEEN ? AND ?', Date.today, Date.today + 7]
 
   attr_accessor :timezone, :start_time, :end_time
 

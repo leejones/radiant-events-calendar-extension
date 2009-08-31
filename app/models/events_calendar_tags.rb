@@ -82,6 +82,11 @@ module EventsCalendarTags
       event.end_time ? event.end_time.strftime(format) : nil ].compact.join(" #{tag.attr['connector'] || '-'} ")
   end
 
+  tag 'event:short_time' do |tag|
+    event = tag.locals.event
+    event.short_time if event.short_time
+  end
+
   desc %{
     Renders the location for the current event.
   }
