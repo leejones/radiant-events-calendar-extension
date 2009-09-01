@@ -49,6 +49,16 @@ module EventsCalendarTags
   end
 
   desc %{
+    Renders the url for the current event.
+  }
+  tag 'event:url' do |tag|
+    year = tag.locals.event.date.year
+    month = tag.locals.event.date.month
+    day = tag.locals.event.date.day
+    "/events/#{year}/#{month}/#{day}/"
+  end
+
+  desc %{
     Renders the date for the current event.
     An optional date format string may be specified.
     The default format string is <code>%Y-%m-%d</code>.
