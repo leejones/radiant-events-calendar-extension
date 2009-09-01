@@ -22,6 +22,10 @@ module EventsCalendarTags
     tag.locals.events = Event.all(events_find_options(tag))
     tag.expand
   end
+  
+  tag 'if_events' do |tag|
+    tag.expand unless tag.locals.events.blank?
+  end
 
   desc %{
     Loops through events.

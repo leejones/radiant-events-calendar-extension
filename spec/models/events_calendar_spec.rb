@@ -153,6 +153,13 @@ describe 'EventsCalendar' do
 
       pages(:home).should render(tag).as(expected)
     end
+    
+    it 'should show content only if events match' do
+      tag = %{<r:events for="2020-01-01"><r:if_events>Should not show</r:if_events></r:events>}
+      expected = ""
+
+      pages(:home).should render(tag).as(expected)
+    end
   end
 
   describe '<r:events:each>' do
@@ -171,6 +178,17 @@ describe 'EventsCalendar' do
     it 'should return the event name' do
       tag = %Q{<r:events for='#{Date.today.year}-01-01'><r:each><r:event:name /></r:each></r:events>}
       expected = "New Year's Day"
+
+      pages(:home).should render(tag).as(expected)
+    end
+
+  end
+
+  describe '<r:events:each:event:url>' do
+
+    it 'should return the event url' do
+      tag = %Q{<r:events for='#{Date.today.year}-01-01'><r:each><r:event:url /></r:each></r:events>}
+      expected = "/events/#{Date.today.year}/1/1/"
 
       pages(:home).should render(tag).as(expected)
     end
