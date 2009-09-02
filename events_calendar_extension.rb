@@ -26,6 +26,11 @@ class EventsCalendarExtension < Radiant::Extension
   def activate
     admin.tabs.add "Events", "/admin/events", :after => "Layouts"
     Page.send :include, EventsCalendarTags
+    
+    Asset.class_eval {
+      include AssetEventAssociations
+    }
+    
   end
   
   def deactivate

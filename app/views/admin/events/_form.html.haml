@@ -17,7 +17,7 @@
       }
       return false;
     }
-
+= error_messages_for :asset
 - form_for [:admin, @event] do |f|
   .form-area
     #event_form_area
@@ -67,6 +67,23 @@
           Reference:
           %span{:id => 'filter-reference-link-event'}
             = link_to_function "Filter", "show_filter_reference();"
+      %p.title
+        = f.label :asset_id, "Image"
+      %p
+        Select an image to attach it to this event. A selected image can be detached from the event by selecting it again.
+      .image_picker
+        = select :event, :asset_id, Asset.images.collect {|a| [ a.title, a.id ] }, {:include_blank => 'None'}, :class => "selectbox images_input"
+        %ul.images
+          - first_image = Asset.images.first
+          - last_image = Asset.images.last
+          - Asset.images.each do |image|
+            - css_classes = []
+            - css_classes << "active" if @event.asset && @event.asset.id == image.id
+            - css_classes << "first" if image == first_image
+            - css_classes << "last" if image == last_image
+            %li{:class => css_classes.join(' ')}
+              %a{:href=>image.thumbnail('upcoming_exhibition_thumb')}
+                %img{:src=>image.thumbnail('upcoming_exhibition_thumb'), :width=>image.width('upcoming_exhibition_thumb'), :height=>image.height('upcoming_exhibition_thumb'), :alt=>image.title}
   %span.clear &nbsp;
   = javascript_tag "$('event_name').activate()"
   %p.buttons

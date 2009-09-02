@@ -7,6 +7,8 @@ class Event < ActiveRecord::Base
   validates_length_of :filter_id, :maximum => 25, :allow_nil => true, :message => '{{count}}-character limit'
   validate :ensure_start_time_and_end_time_are_sane
 
+  belongs_to :asset
+  
   default_scope :order => "date, start_time"
 
   named_scope :for_date, lambda {|date| { :conditions => [ 'date = ?', date ], :order => 'start_time, name' } }

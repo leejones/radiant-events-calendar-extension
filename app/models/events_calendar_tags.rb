@@ -31,9 +31,25 @@ module EventsCalendarTags
     Loops through events.
   }
   tag 'events:each' do |tag|
+    result = []
+    column_count = 1
+
     tag.locals.events.collect do |event|
       tag.locals.event = event
+      tag.locals.column_count = column_count
+      column_count += 1
       tag.expand
+    end
+  end
+
+  desc %{
+    Renders a counter when returning events.
+  }
+  tag "event:column" do |tag|
+    unless tag.attr['count'].to_i == 0
+      if (tag.locals.column_count.to_i % tag.attr['count'].to_i == 0)
+        tag.expand
+      end
     end
   end
 
@@ -60,6 +76,31 @@ module EventsCalendarTags
     month = tag.locals.event.date.month
     day = tag.locals.event.date.day
     "/events/#{year}/#{month}/#{day}/"
+  end
+  
+  desc %{
+    Renders contents if event has an image.
+  }
+  tag 'event:if_image' do |tag|
+    tag.expand unless tag.locals.event.asset.blank?
+  end
+
+  desc %{
+    Renders image for event
+  }
+  tag 'event:image' do |tag|
+    format = tag.attr['format'] || "exhibition_current_thumb"
+    unless tag.locals.image
+      asset = tag.locals.event.asset
+    else
+      asset = tag.locals.image
+    end
+    url = asset.thumbnail(format)
+    width = asset.width(format)
+    height = asset.height(format)
+    title = asset.title
+    caption = asset.caption
+    "<img src=\"#{url}\" width=\"#{width}\" height=\"#{height}\" alt=\"#{caption}\" title=\"#{title}\" />"
   end
 
   desc %{
